@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://boyaddtt24sy5"]
+
+[ext_resource type="Script" uid="uid://5dwar812bk4l" path="res://scripts/CombatSkillZone.gd" id="1_6o8cj"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7n77a"]
+
+[node name="CombatSkillZone" type="Area2D" unique_id=862248270]
+script = ExtResource("1_6o8cj")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1878600642]
+shape = SubResource("RectangleShape2D_7n77a")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1570688034]
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
+color = Color(1, 0, 1, 1)

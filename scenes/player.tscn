@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://wrg47dn76sic"]
+
+[ext_resource type="Script" uid="uid://dxxj42n1dfwt7" path="res://scripts/player.gd" id="1_g2els"]
+[ext_resource type="Shader" uid="uid://85p4j5tv5dnu" path="res://scenes/player.gdshader" id="2_dqkch"]
+[ext_resource type="Texture2D" uid="uid://cmi6mrr01d4mn" path="res://assets/icon.svg" id="2_qhqgy"]
+[ext_resource type="PackedScene" uid="uid://bp7hsmhw628fq" path="res://scenes/typing_ui.tscn" id="3_qhqgy"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_7n77a"]
+shader = ExtResource("2_dqkch")
+shader_parameter/flash_color = Color(0, 1, 1, 1)
+shader_parameter/flash_modifier = 0.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7n77a"]
+
+[node name="Player" type="CharacterBody2D" unique_id=438760599]
+script = ExtResource("1_g2els")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=1617296726]
+material = SubResource("ShaderMaterial_7n77a")
+scale = Vector2(0.16, 0.16)
+texture = ExtResource("2_qhqgy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=2076752790]
+shape = SubResource("RectangleShape2D_7n77a")
+
+[node name="TypingUI" parent="." unique_id=2043225906 instance=ExtResource("3_qhqgy")]
+
+[node name="HUD" type="CanvasLayer" parent="." unique_id=1898856131]
+
+[node name="DamageFlash" type="ColorRect" parent="HUD" unique_id=191223918]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 0, 0, 1)
+
+[node name="AfterImageContainer" type="Node" parent="." unique_id=128437920]
+process_mode = 3
+
+[node name="GhostTimer" type="Timer" parent="AfterImageContainer" unique_id=1104972097]
+process_mode = 3
+wait_time = 0.015

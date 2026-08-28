@@ -1,0 +1,57 @@
+[gd_scene format=3 uid="uid://bp7hsmhw628fq"]
+
+[ext_resource type="Script" uid="uid://bdyy8i74sd8yb" path="res://scripts/typing_ui.gd" id="1_20ag0"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_shhcf"]
+bg_color = Color(0.9764706, 0, 0, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7n77a"]
+bg_color = Color(0, 1, 0, 1)
+
+[node name="TypingUI" type="Node2D" unique_id=91224756]
+process_mode = 3
+script = ExtResource("1_20ag0")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=2139121267]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 0.49803922)
+
+[node name="Timer" type="Timer" parent="." unique_id=12500828]
+
+[node name="ProgressBar" type="ProgressBar" parent="." unique_id=744811595]
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -100.0
+offset_right = 100.0
+offset_bottom = -80.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_shhcf")
+theme_override_styles/fill = SubResource("StyleBoxFlat_7n77a")
+show_percentage = false
+
+[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=634900238]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -100.0
+offset_top = -140.0
+offset_right = 100.0
+offset_bottom = -100.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/normal_font_size = 48
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+metadata/_edit_use_anchors_ = true

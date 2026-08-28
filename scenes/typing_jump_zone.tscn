@@ -1,0 +1,18 @@
+[gd_scene format=3 uid="uid://d16bgmnv0pxeb"]
+
+[ext_resource type="Script" uid="uid://cjugtfm5h4idr" path="res://scripts/typing_skill_zone.gd" id="1_f6qa3"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7n77a"]
+
+[node name="TypingSkillZone" type="Area2D" unique_id=1310098119]
+script = ExtResource("1_f6qa3")
+required_word_count = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=449084867]
+shape = SubResource("RectangleShape2D_7n77a")
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1404282596]
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 10.0
