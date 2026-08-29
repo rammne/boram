@@ -26,6 +26,9 @@ var is_typing: bool = false
 @export var dash_speed: float = 1200.0
 @export var dash_duration: float = 0.2
 
+var is_knocked_back: bool = false
+@export var knockback_recovery_time: float = 0.4
+
 var is_dashing: bool = false
 var stored_x_velocity: float = 0.0
 
@@ -310,19 +313,50 @@ func _handle_jump() -> void:
 	if Input.is_action_just_released("jump") and velocity.y < 0:
 		velocity.y *= jump_cut_multiplier
 
+func apply_knockback(source_position: Vector2, force_x: float, force_y: float) -> void:
+	# 1. State Guard: Reject all damage/knockback if executing a cinematic attack
+	if is_dashing:
+		return
+		
+	is_knocked_back = true
+	preserve_momentum = false
+	
+	# 2. Directional Calculation
+	var direction_x: float = sign(global_position.x - source_position.x)
+	if direction_x == 0:
+		direction_x = 1.0 
+		
+	velocity.x = direction_x * force_x
+	velocity.y = abs(force_y) 
+	
+	# 3. Visual Feedback: Damage Flash
+	#var damage_flash = get_node_or_null("HUD/DamageFlash")
+	#if damage_flash:
+		## Ensure the node is visible, snap opacity to 100%, then fade to 0%
+		#damage_flash.show()
+		#damage_flash.modulate.a = 1.0
+		#
+		#var flash_tween = create_tween()
+		## Fades out over 0.2 seconds for a sharp, impactful flash
+		#flash_tween.tween_property(damage_flash, "modulate:a", 0.0, 0.2).set_ease(Tween.EASE_OUT)
+	
+	# 4. State Recovery
+	await get_tree().create_timer(knockback_recovery_time).timeout
+	is_knocked_back = false
+
 func _handle_movement(delta: float) -> void:
+	if is_knocked_back:
+		velocity.x = move_toward(velocity.x, 0, friction * delta)
+		return
+
 	var direction := Input.get_axis("left", "right")
 	
 	if direction != 0:
-		# The player pressed a key. Return manual control and disable the momentum lock.
 		preserve_momentum = false 
-		velocity.x = direction * max_speed # Replace 'speed' with your actual speed variable
+		velocity.x = direction * max_speed 
 	else:
 		if preserve_momentum and not is_on_floor():
-			# Player is mid-air after a skill and not pressing keys. 
-			# Do nothing to velocity.x so they keep flying forward.
 			pass 
 		else:
-			# Standard friction when on the ground or falling normally without input
 			preserve_momentum = false
-			velocity.x = move_toward(velocity.x, 0, friction * delta) # Replace 'friction' with your actual friction variable
+			velocity.x = move_toward(velocity.x, 0, friction * delta)

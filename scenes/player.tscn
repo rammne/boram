@@ -13,6 +13,7 @@ shader_parameter/flash_modifier = 0.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7n77a"]
 
 [node name="Player" type="CharacterBody2D" unique_id=438760599]
+collision_mask = 3
 script = ExtResource("1_g2els")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=1617296726]

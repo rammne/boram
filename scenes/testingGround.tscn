@@ -4,9 +4,9 @@
 [ext_resource type="Script" uid="uid://dfga7qkxy7sus" path="res://scripts/camera_2d.gd" id="2_shhcf"]
 [ext_resource type="PackedScene" uid="uid://d16bgmnv0pxeb" path="res://scenes/typing_jump_zone.tscn" id="2_smf7t"]
 [ext_resource type="PackedScene" uid="uid://bdixgcg2rwv04" path="res://scenes/world_boundary.tscn" id="3_ct7hk"]
-[ext_resource type="PackedScene" uid="uid://cu5w8ecqmbmq2" path="res://scenes/enemy.tscn" id="4_shhcf"]
 [ext_resource type="PackedScene" uid="uid://bx2yogyweqdee" path="res://scenes/test_platform.tscn" id="5_b1ee8"]
 [ext_resource type="PackedScene" uid="uid://boyaddtt24sy5" path="res://scenes/combat_skill_zone.tscn" id="7_8ufro"]
+[ext_resource type="PackedScene" uid="uid://1cmy5hsckvxl" path="res://scenes/wraith.tscn" id="8_nbqfs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7n77a"]
 size = Vector2(1158, 117)
@@ -41,40 +41,25 @@ color = Color(0.12005126, 0.12005126, 0.12005126, 1)
 [node name="WorldBoundary" parent="." unique_id=1093097076 instance=ExtResource("3_ct7hk")]
 position = Vector2(-71, 745)
 
-[node name="Enemy" parent="." unique_id=1841157842 instance=ExtResource("4_shhcf")]
-position = Vector2(876, 245)
-word_health = 1
-
-[node name="Enemy2" parent="." unique_id=939177848 instance=ExtResource("4_shhcf")]
-position = Vector2(411, 115)
-word_health = 1
-
-[node name="Enemy4" parent="." unique_id=424980814 instance=ExtResource("4_shhcf")]
-position = Vector2(945, -54)
-word_health = 1
-
-[node name="Enemy5" parent="." unique_id=1780527145 instance=ExtResource("4_shhcf")]
-position = Vector2(414, -186)
-word_health = 1
-
-[node name="Enemy3" parent="." unique_id=576659901 instance=ExtResource("4_shhcf")]
-position = Vector2(457, 520)
-word_health = 1
-
 [node name="TestPlatform" parent="." unique_id=1601330142 instance=ExtResource("5_b1ee8")]
 position = Vector2(500, 422)
 
 [node name="TestPlatform2" parent="." unique_id=742392728 instance=ExtResource("5_b1ee8")]
 position = Vector2(846, 274)
 
-[node name="TestPlatform3" parent="." unique_id=1285997258 instance=ExtResource("5_b1ee8")]
-position = Vector2(173, 145)
-
 [node name="TypingSkillZone" parent="." unique_id=1310098119 instance=ExtResource("2_smf7t")]
 position = Vector2(755, 335)
 
 [node name="TypingSkillZone2" parent="." unique_id=62816091 instance=ExtResource("2_smf7t")]
 position = Vector2(669, 193)
+skill_type = 1
+required_word_count = 1
 
 [node name="CombatSkillZone" parent="." unique_id=862248270 instance=ExtResource("7_8ufro")]
 position = Vector2(307, 507)
+
+[node name="Wraith" parent="." unique_id=1523682806 instance=ExtResource("8_nbqfs")]
+position = Vector2(720, 125)
+
+[node name="Wraith2" parent="." unique_id=1495334845 instance=ExtResource("8_nbqfs")]
+position = Vector2(1041, 431)

@@ -1,0 +1,52 @@
+[gd_scene format=3 uid="uid://1cmy5hsckvxl"]
+
+[ext_resource type="Script" uid="uid://bowondx8788xa" path="res://scenes/wraith.gd" id="1_jgvxf"]
+[ext_resource type="Texture2D" uid="uid://c7plnpg36kxa2" path="res://assets/enemy_base.png" id="1_rvm2k"]
+[ext_resource type="Script" uid="uid://brkvfsw0vovwa" path="res://scenes/drift_movement.gd" id="2_asygq"]
+[ext_resource type="Script" uid="uid://chjbnvvbfi83o" path="res://scenes/attack_component.gd" id="3_hbxvh"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7n77a"]
+size = Vector2(16, 16)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_rvm2k"]
+radius = 400.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7n77a"]
+radius = 176.17
+
+[node name="Wraith" type="CharacterBody2D" unique_id=1523682806 groups=["enemies"]]
+collision_layer = 0
+script = ExtResource("1_jgvxf")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=663538725]
+texture = ExtResource("1_rvm2k")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1989940226]
+shape = SubResource("RectangleShape2D_7n77a")
+
+[node name="VisionArea" type="Area2D" parent="." unique_id=1405598853]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="VisionArea" unique_id=241601283]
+shape = SubResource("CircleShape2D_rvm2k")
+
+[node name="DriftMovement" type="Node" parent="." unique_id=672368935 node_paths=PackedStringArray("body", "vision_area")]
+script = ExtResource("2_asygq")
+body = NodePath("..")
+vision_area = NodePath("../VisionArea")
+
+[node name="AttackComponent" type="Node" parent="." unique_id=362910313 node_paths=PackedStringArray("body", "hitbox_area", "movement_component")]
+script = ExtResource("3_hbxvh")
+body = NodePath("..")
+hitbox_area = NodePath("../HitboxArea")
+movement_component = NodePath("../DriftMovement")
+knockback_force_x = 1000.0
+knockback_force_y = 500.0
+windup_time = 0.2
+charge_speed = 700.0
+charge_duration = 0.25
+cooldown_time = 0.4
+
+[node name="HitboxArea" type="Area2D" parent="." unique_id=10740906]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxArea" unique_id=5837556]
+shape = SubResource("CircleShape2D_7n77a")
