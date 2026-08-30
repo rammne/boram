@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://1cmy5hsckvxl"]
 
-[ext_resource type="Script" uid="uid://bowondx8788xa" path="res://scenes/wraith.gd" id="1_jgvxf"]
+[ext_resource type="Script" uid="uid://bowondx8788xa" path="res://scripts/wraith.gd" id="1_jgvxf"]
 [ext_resource type="Texture2D" uid="uid://c7plnpg36kxa2" path="res://assets/enemy_base.png" id="1_rvm2k"]
-[ext_resource type="Script" uid="uid://brkvfsw0vovwa" path="res://scenes/drift_movement.gd" id="2_asygq"]
+[ext_resource type="Script" uid="uid://brkvfsw0vovwa" path="res://scripts/drift_movement.gd" id="2_asygq"]
 [ext_resource type="Script" uid="uid://chjbnvvbfi83o" path="res://scenes/attack_component.gd" id="3_hbxvh"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7n77a"]
@@ -15,7 +15,8 @@ radius = 400.0
 radius = 176.17
 
 [node name="Wraith" type="CharacterBody2D" unique_id=1523682806 groups=["enemies"]]
-collision_layer = 0
+collision_layer = 4
+collision_mask = 5
 script = ExtResource("1_jgvxf")
 
 [node name="Sprite2D" type="Sprite2D" parent="." unique_id=663538725]

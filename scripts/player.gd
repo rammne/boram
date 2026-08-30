@@ -23,8 +23,8 @@ var is_typing: bool = false
 
 # --- Skill Metrics ---
 @export var double_jump_force: float = -600.0
-@export var dash_speed: float = 1200.0
-@export var dash_duration: float = 0.2
+@export var dash_speed: float = 1400.0
+@export var dash_duration: float = 0.3
 
 var is_knocked_back: bool = false
 @export var knockback_recovery_time: float = 0.4
@@ -40,7 +40,7 @@ var GhostScene = preload("res://scenes/ghost.tscn")
 
 @onready var ghost_timer = $AfterImageContainer/GhostTimer
 @onready var ghost_container = $AfterImageContainer
-@onready var sprite = $Sprite2D # Change to your exact sprite node name
+@onready var sprite = $AnimatedSprite2D # Change to your exact sprite node name
 
 var is_ghosting: bool = false
 var last_ghost_position: Vector2 = Vector2.ZERO
@@ -72,7 +72,7 @@ func _on_ghost_timer_timeout() -> void:
 	ghost.global_position = global_position
 	
 	# Sync visual texture to match the player exactly
-	var player_sprite = $Sprite2D
+	#var player_sprite = $Sprite2D
 	#if player_sprite and player_sprite.texture:
 		#ghost.texture = player_sprite.texture
 		#
@@ -117,6 +117,7 @@ func _on_typing_resolved(completed_words: int, total_words: int, event_type: Str
 			_execute_dash(power_ratio)
 			
 		"cinematic_attack":
+			sprite.play("charge_attack")
 			_execute_cinematic_attack(completed_words, total_words)
 
 func _execute_cinematic_attack(completed_words: int, total_words: int) -> void:
@@ -125,15 +126,17 @@ func _execute_cinematic_attack(completed_words: int, total_words: int) -> void:
 	
 	var is_perfect: bool = (completed_words >= total_words)
 	var cam: Camera2D = get_node_or_null("Camera2D")
-	var sprite_node = $Sprite2D 
+	var sprite_node = $AnimatedSprite2D
+
 
 	# --- CHARGING / ANTICIPATION PHASE ---
 	if is_perfect and cam:
-		var cam_tween = create_tween()
-		var super_zoom = cam.typing_zoom * 1.33 
-		cam_tween.tween_property(cam, "zoom", super_zoom, 1.5).set_trans(Tween.TRANS_SINE)
+		#var cam_tween = create_tween()
+		#var super_zoom = cam.typing_zoom * 1.33 
+		#cam_tween.tween_property(cam, "zoom", super_zoom, 1.5).set_trans(Tween.TRANS_SINE)
 		
 		if sprite_node and sprite_node.material and sprite_node.material is ShaderMaterial:
+			print('test log for flash attack')
 			sprite_node.material.set_shader_parameter("flash_modifier", 1.0)
 			var flash_tween = create_tween()
 			flash_tween.tween_property(sprite_node.material, "shader_parameter/flash_modifier", 0.0, 1.0)
@@ -150,10 +153,13 @@ func _execute_cinematic_attack(completed_words: int, total_words: int) -> void:
 	
 	var remaining_damage: int = completed_words
 	
+	if cam and cam.has_method("force_attack_zoom_out"):
+			cam.force_attack_zoom_out()
+	
 	for enemy in enemies:
 		if remaining_damage <= 0:
 			break
-			
+		
 		# 1. Anchor position, force initial spawn, open process gate
 		last_ghost_position = global_position
 		_spawn_ghost_at(global_position)
@@ -175,9 +181,13 @@ func _execute_cinematic_attack(completed_words: int, total_words: int) -> void:
 			
 		await get_tree().create_timer(0.3).timeout 
 		
-	# --- RESOLUTION & ZOOM OUT ---
+	# --- RESOLUTION ---
 	if completed_words < total_words:
+		
 		# Failure State Return
+		get_tree().paused = true
+		await get_tree().create_timer(0.5).timeout 
+		get_tree().paused = false
 		last_ghost_position = global_position
 		_spawn_ghost_at(global_position)
 		is_ghosting = true
@@ -188,20 +198,16 @@ func _execute_cinematic_attack(completed_words: int, total_words: int) -> void:
 		
 		is_ghosting = false 
 		
-		velocity.y = double_jump_force * 0.5 
+		#velocity.y = double_jump_force * 0.5 
 		preserve_momentum = false 
-		
-		if cam and cam.has_method("force_zoom_out"):
-			cam.force_zoom_out()
 	else:
 		# Success State
-		velocity.y = double_jump_force * 0.75
+		#velocity.y = double_jump_force * 0.75
 		preserve_momentum = true
 		
-		if cam and cam.has_method("force_zoom_out"):
-			cam.force_zoom_out()
-		
 	is_dashing = false
+	if cam and cam.has_method("force_default_zoom"):
+		cam.force_default_zoom()
 
 func _execute_dash(power_ratio: float) -> void:
 	is_dashing = true
@@ -216,6 +222,7 @@ func _execute_dash(power_ratio: float) -> void:
 			
 	velocity.y = 0
 	# Multiply the base speed by the completion ratio
+	sprite.play("dash")
 	velocity.x = direction * (dash_speed * power_ratio) 
 	
 	await get_tree().create_timer(dash_duration).timeout
@@ -309,6 +316,9 @@ func _handle_jump() -> void:
 		coyote_timer = 0.0
 		jump_buffer_timer = 0.0
 	
+	if velocity.y != 0 and not is_on_floor():
+		sprite.play("jump")
+	
 	# Variable Jump Height
 	if Input.is_action_just_released("jump") and velocity.y < 0:
 		velocity.y *= jump_cut_multiplier
@@ -327,18 +337,19 @@ func apply_knockback(source_position: Vector2, force_x: float, force_y: float) -
 		direction_x = 1.0 
 		
 	velocity.x = direction_x * force_x
-	velocity.y = abs(force_y) 
+	velocity.y = abs(force_y)
+	sprite.play("hurt")
 	
 	# 3. Visual Feedback: Damage Flash
-	#var damage_flash = get_node_or_null("HUD/DamageFlash")
-	#if damage_flash:
-		## Ensure the node is visible, snap opacity to 100%, then fade to 0%
-		#damage_flash.show()
-		#damage_flash.modulate.a = 1.0
-		#
-		#var flash_tween = create_tween()
-		## Fades out over 0.2 seconds for a sharp, impactful flash
-		#flash_tween.tween_property(damage_flash, "modulate:a", 0.0, 0.2).set_ease(Tween.EASE_OUT)
+	var damage_flash = get_node_or_null("HUD/DamageFlash")
+	if damage_flash:
+		# Ensure the node is visible, snap opacity to 100%, then fade to 0%
+		damage_flash.show()
+		damage_flash.modulate.a = 0.5
+		
+		var flash_tween = create_tween()
+		# Fades out over 0.2 seconds for a sharp, impactful flash
+		flash_tween.tween_property(damage_flash, "modulate:a", 0.0, 0.2).set_ease(Tween.EASE_OUT)
 	
 	# 4. State Recovery
 	await get_tree().create_timer(knockback_recovery_time).timeout
@@ -350,6 +361,17 @@ func _handle_movement(delta: float) -> void:
 		return
 
 	var direction := Input.get_axis("left", "right")
+	
+	if direction > 0:
+		sprite.flip_h = 0
+	elif direction < 0:
+		sprite.flip_h = 1
+	
+	if direction and is_on_floor():
+		sprite.play("run")
+	elif not direction and is_on_floor():
+		sprite.play("idle")
+		
 	
 	if direction != 0:
 		preserve_momentum = false 

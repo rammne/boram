@@ -16,11 +16,10 @@ size = Vector2(1158, 117)
 [node name="Player" parent="." unique_id=438760599 instance=ExtResource("1_sptbv")]
 position = Vector2(54, 464)
 
-[node name="Camera2D" type="Camera2D" parent="Player" unique_id=1700165349]
-zoom = Vector2(1.5, 1.5)
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=1700165349 node_paths=PackedStringArray("target")]
 limit_bottom = 745
-position_smoothing_enabled = true
 script = ExtResource("2_shhcf")
+target = NodePath("..")
 
 [node name="Env" type="Node" parent="." unique_id=118964228]
 
@@ -51,15 +50,20 @@ position = Vector2(846, 274)
 position = Vector2(755, 335)
 
 [node name="TypingSkillZone2" parent="." unique_id=62816091 instance=ExtResource("2_smf7t")]
-position = Vector2(669, 193)
+position = Vector2(646, 510)
+skill_type = 1
+required_word_count = 1
+
+[node name="TypingSkillZone3" parent="." unique_id=1648886198 instance=ExtResource("2_smf7t")]
+position = Vector2(277, 511)
 skill_type = 1
 required_word_count = 1
 
 [node name="CombatSkillZone" parent="." unique_id=862248270 instance=ExtResource("7_8ufro")]
-position = Vector2(307, 507)
+position = Vector2(1044, 505)
 
 [node name="Wraith" parent="." unique_id=1523682806 instance=ExtResource("8_nbqfs")]
-position = Vector2(720, 125)
+position = Vector2(223, 96)
 
-[node name="Wraith2" parent="." unique_id=1495334845 instance=ExtResource("8_nbqfs")]
-position = Vector2(1041, 431)
+[node name="Wraith2" parent="." unique_id=963946068 instance=ExtResource("8_nbqfs")]
+position = Vector2(-156, 104)

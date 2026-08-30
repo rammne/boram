@@ -5,7 +5,7 @@ extends Sprite2D
 
 func _ready() -> void:
 	# 1. Setup the initial look
-	modulate = Color(0, 1, 1, 0.75) # Tint Cyan and set 75% transparent
+	modulate = Color(0.644, 0.0, 0.046, 0.749) # Tint Cyan and set 75% transparent
 	
 	# 2. Fade to fully transparent over fade_time
 	var tween = create_tween()

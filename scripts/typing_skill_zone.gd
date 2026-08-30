@@ -8,6 +8,7 @@ enum SkillType { DOUBLE_JUMP, DASH, ULTIMATE }
 @export var required_word_count: int = 1 
 @export var respawn_time: float = 2.5
 
+@export var bullet_time_scale: float = 0.1
 @export var base_reaction_time: float = 0.5 
 @export var time_per_character: float = 0.2
 
@@ -31,6 +32,8 @@ func _on_body_entered(body: Node2D) -> void:
 		var prompt_phrase: String = prompt_data[0]
 		var calculated_time_limit: float = prompt_data[1]
 		var event_string: String = _get_event_string()
+		
+		Engine.time_scale = bullet_time_scale
 		
 		# Pass get_instance_id() as the 4th parameter
 		Signals.start_typing_event.emit(prompt_phrase, calculated_time_limit, event_string, get_instance_id())

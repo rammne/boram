@@ -1,7 +1,7 @@
 [gd_scene format=3 uid="uid://cbykbpuq2qnkg"]
 
 [ext_resource type="Texture2D" uid="uid://cwv1pscud1a2a" path="res://assets/square_particle_asta.png" id="1_l5lq6"]
-[ext_resource type="Script" uid="uid://2ulgg8m6t15y" path="res://scenes/ghost.gd" id="2_l5lq6"]
+[ext_resource type="Script" uid="uid://2ulgg8m6t15y" path="res://scripts/ghost.gd" id="2_l5lq6"]
 
 [node name="Ghost" type="Sprite2D" unique_id=896925264]
 z_index = -1
