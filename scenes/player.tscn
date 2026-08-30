@@ -245,7 +245,7 @@ size = Vector2(18, 40)
 
 [node name="Player" type="CharacterBody2D" unique_id=438760599]
 material = SubResource("ShaderMaterial_dqkch")
-collision_mask = 3
+collision_mask = 7
 script = ExtResource("1_g2els")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1952985154]

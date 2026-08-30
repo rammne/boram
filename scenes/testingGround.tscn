@@ -2,10 +2,8 @@
 
 [ext_resource type="PackedScene" uid="uid://wrg47dn76sic" path="res://scenes/player.tscn" id="1_sptbv"]
 [ext_resource type="Script" uid="uid://dfga7qkxy7sus" path="res://scripts/camera_2d.gd" id="2_shhcf"]
-[ext_resource type="PackedScene" uid="uid://d16bgmnv0pxeb" path="res://scenes/typing_jump_zone.tscn" id="2_smf7t"]
 [ext_resource type="PackedScene" uid="uid://bdixgcg2rwv04" path="res://scenes/world_boundary.tscn" id="3_ct7hk"]
 [ext_resource type="PackedScene" uid="uid://bx2yogyweqdee" path="res://scenes/test_platform.tscn" id="5_b1ee8"]
-[ext_resource type="PackedScene" uid="uid://boyaddtt24sy5" path="res://scenes/combat_skill_zone.tscn" id="7_8ufro"]
 [ext_resource type="PackedScene" uid="uid://1cmy5hsckvxl" path="res://scenes/wraith.tscn" id="8_nbqfs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7n77a"]
@@ -46,24 +44,23 @@ position = Vector2(500, 422)
 [node name="TestPlatform2" parent="." unique_id=742392728 instance=ExtResource("5_b1ee8")]
 position = Vector2(846, 274)
 
-[node name="TypingSkillZone" parent="." unique_id=1310098119 instance=ExtResource("2_smf7t")]
-position = Vector2(755, 335)
-
-[node name="TypingSkillZone2" parent="." unique_id=62816091 instance=ExtResource("2_smf7t")]
-position = Vector2(646, 510)
-skill_type = 1
-required_word_count = 1
-
-[node name="TypingSkillZone3" parent="." unique_id=1648886198 instance=ExtResource("2_smf7t")]
-position = Vector2(277, 511)
-skill_type = 1
-required_word_count = 1
-
-[node name="CombatSkillZone" parent="." unique_id=862248270 instance=ExtResource("7_8ufro")]
-position = Vector2(1044, 505)
-
 [node name="Wraith" parent="." unique_id=1523682806 instance=ExtResource("8_nbqfs")]
 position = Vector2(223, 96)
 
 [node name="Wraith2" parent="." unique_id=963946068 instance=ExtResource("8_nbqfs")]
-position = Vector2(-156, 104)
+position = Vector2(709, -150)
+
+[node name="Wraith3" parent="." unique_id=760726360 instance=ExtResource("8_nbqfs")]
+position = Vector2(-309, -159)
+
+[node name="Wraith4" parent="." unique_id=1942438888 instance=ExtResource("8_nbqfs")]
+position = Vector2(165, -352)
+
+[node name="Wraith5" parent="." unique_id=766692045 instance=ExtResource("8_nbqfs")]
+position = Vector2(-469, 143)
+
+[node name="Wraith6" parent="." unique_id=93394023 instance=ExtResource("8_nbqfs")]
+position = Vector2(1240, -7)
+
+[node name="Wraith7" parent="." unique_id=681884912 instance=ExtResource("8_nbqfs")]
+position = Vector2(974, -17)
