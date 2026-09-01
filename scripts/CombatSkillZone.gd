@@ -1,6 +1,6 @@
 extends Area2D
 
-@export var attack_pool: Array[String] = ["slash", "strike", "smash", "cleave", "pierce"]
+@export var attack_pool: Array[String] = ["scinde ", "feri", "frange", "divide", "perfora"]
 @export var base_reaction_time: float = 1.0
 @export var time_per_character: float = 0.2
 @export var bullet_time_scale: float = 0.1

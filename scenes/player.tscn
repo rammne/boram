@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://bqfercrwthsat" path="res://assets/character/ATTACK 1.png" id="4_smehm"]
 [ext_resource type="Texture2D" uid="uid://bj3qf1y0oklts" path="res://assets/character/JUMP.png" id="4_tuyoq"]
 [ext_resource type="Texture2D" uid="uid://cofckbslfrp2k" path="res://assets/character/HURT.png" id="5_ur7pv"]
+[ext_resource type="AudioStream" uid="uid://bgd4ei7h166py" path="res://assets/character/sword_slash_1.mp3" id="10_y4r1p"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dqkch"]
 shader = ExtResource("2_dqkch")
@@ -276,3 +277,7 @@ process_mode = 3
 [node name="GhostTimer" type="Timer" parent="AfterImageContainer" unique_id=1104972097]
 process_mode = 3
 wait_time = 0.015
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=540214195]
+process_mode = 3
+stream = ExtResource("10_y4r1p")

@@ -5,7 +5,7 @@ enum SkillType { DOUBLE_JUMP, DASH, ULTIMATE }
 @export var current_level: int = 1
 
 # --- Skill Activation Metrics ---
-@export var required_word_count: int = 3
+#@export var required_word_count: int = 3
 @export var bullet_time_scale: float = 0.1
 @export var base_reaction_time: float = 0.5
 @export var time_per_character: float = 0.2
@@ -13,7 +13,7 @@ enum SkillType { DOUBLE_JUMP, DASH, ULTIMATE }
 var thematic_pools: Dictionary = {
 	SkillType.DOUBLE_JUMP: ["leap", "soar", "jump", "vault", "rise", "up", "hop"],
 	SkillType.DASH: ["swift", "rush", "zoom", "bolt", "dart", "flash", "skip"],
-	SkillType.ULTIMATE: ["smash", "crush", "break", "burst", "strike", "blast"]
+	SkillType.ULTIMATE: ["scindas", "ferias", "frangas", "dividas", "perfores", "laniara", "impelle", "malleus", "findere", "pungira"]
 }
 
 # --- Movement Metrics ---
@@ -46,6 +46,18 @@ var preserve_momentum: bool = false
 @export var dash_duration: float = 0.3
 @export var knockback_recovery_time: float = 0.4
 
+# --- Mobility Charges ---
+@export var max_dash_charges: int = 3
+var current_dash_charges: int = max_dash_charges
+
+@export var max_jump_charges: int = 3
+var current_jump_charges: int = max_jump_charges
+var can_double_jump: bool = true
+
+# --- Time-Based Cooldown Restrictions (Ultimate) ---
+@export var ultimate_cooldown: float = 15.0 
+var ultimate_last_used_time: float = -15.0
+
 var stored_x_velocity: float = 0.0
 var combat_origin_position: Vector2 = Vector2.ZERO
 var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
@@ -54,6 +66,7 @@ var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
 @onready var ghost_timer = $AfterImageContainer/GhostTimer
 @onready var ghost_container = $AfterImageContainer
 @onready var sprite = $AnimatedSprite2D
+@onready var audio_stream_player_2d: AudioStreamPlayer2D = $AudioStreamPlayer2D
 
 var is_invulnerable: bool = false
 
@@ -69,19 +82,28 @@ func _ready() -> void:
 		ghost_timer.timeout.connect(_on_ghost_timer_timeout)
 
 func _unhandled_input(event: InputEvent) -> void:
-	# Block inputs if the UI is open OR if a movement skill is actively executing
-	if is_typing_skill or is_dashing:
+	if is_typing_skill or is_dashing or is_knocked_back:
 		return
 
 	if event.is_action_pressed("dash"):
-		_trigger_skill(SkillType.DASH)
-		get_viewport().set_input_as_handled()
-	elif event.is_action_pressed("db_jump") and not is_on_floor():
-		_trigger_skill(SkillType.DOUBLE_JUMP)
-		get_viewport().set_input_as_handled()
-	elif event.is_action_pressed("attack"): 
-		_trigger_skill(SkillType.ULTIMATE)
-		get_viewport().set_input_as_handled()
+		if current_dash_charges > 0:
+			_trigger_skill(SkillType.DASH)
+			get_viewport().set_input_as_handled()
+		else:
+			print("Out of dash charges.")
+			
+	elif event.is_action_pressed("db_jump") and not is_on_floor() and can_double_jump:
+		if current_jump_charges > 0:
+			_trigger_skill(SkillType.DOUBLE_JUMP)
+			get_viewport().set_input_as_handled()
+		else:
+			print("Out of jump charges.")
+			
+	elif event.is_action_pressed("attack"):
+		var current_time: float = Time.get_ticks_msec() / 1000.0
+		if current_time >= ultimate_last_used_time + ultimate_cooldown:
+			_trigger_skill(SkillType.ULTIMATE)
+			get_viewport().set_input_as_handled()
 
 func _trigger_skill(skill: SkillType) -> void:
 	is_typing_skill = true
@@ -122,17 +144,32 @@ func _on_typing_resolved(completed_words: int, total_words: int, event_type: Str
 		velocity.y += 300.0
 
 func _execute_double_jump() -> void:
+	can_double_jump = false
+	current_jump_charges -= 1
+	last_ghost_position = global_position
+	_spawn_ghost_at(global_position)
+	is_ghosting = true
 	velocity.x = stored_x_velocity 
 	velocity.y = double_jump_force # Applies absolute maximum force
 	preserve_momentum = true 
 	coyote_timer = 0.0
 	jump_buffer_timer = 0.0
 	sprite.play("jump")
+	get_tree().paused = true
+	await get_tree().create_timer(0.5).timeout 
+	get_tree().paused = false
+	last_ghost_position = global_position
+	_spawn_ghost_at(global_position)
+	is_ghosting = false
 
 func _execute_dash() -> void:
+	current_dash_charges -= 1
 	is_dashing = true
 	var direction: float = 0.0
-	
+	set_collision_mask_value(3, false)
+	last_ghost_position = global_position
+	_spawn_ghost_at(global_position)
+	is_ghosting = true
 	if abs(stored_x_velocity) > 0.1:
 		direction = sign(stored_x_velocity)
 	else:
@@ -146,17 +183,32 @@ func _execute_dash() -> void:
 	
 	await get_tree().create_timer(dash_duration).timeout
 	
+	last_ghost_position = global_position
+	_spawn_ghost_at(global_position)
+	is_ghosting = false
 	is_dashing = false
 	velocity.x = 0
+	set_collision_mask_value(3, true)
+	
+func add_charge(type: String, amount: int = 3) -> void:
+	match type:
+		"dash":
+			current_dash_charges = min(current_dash_charges + amount, max_dash_charges)
+		"double_jump":
+			current_jump_charges = min(current_jump_charges + amount, max_jump_charges)
+		"both":
+			current_dash_charges = min(current_dash_charges + amount, max_dash_charges)
+			current_jump_charges = min(current_jump_charges + amount, max_jump_charges)
 
 func _execute_cinematic_attack(completed_words: int, total_words: int) -> void:
+	ultimate_last_used_time = Time.get_ticks_msec() / 1000.0
 	is_dashing = true 
 	is_invulnerable = true
 	velocity = Vector2.ZERO
 	
 	# Disable collision with enemies (assuming enemies are on Layer 2)
 	# This ensures your teleport tweens do not get physically blocked
-	set_collision_mask_value(2, false)
+	set_collision_mask_value(3, false)
 	
 	var is_perfect: bool = (completed_words >= total_words and total_words > 0)
 	var cam: Camera2D = get_node_or_null("Camera2D")
@@ -185,47 +237,52 @@ func _execute_cinematic_attack(completed_words: int, total_words: int) -> void:
 	for enemy in enemies:
 		if remaining_attacks <= 0:
 			break
-		
+		var slash_direction: Vector2 = (enemy.global_position - global_position).normalized()
 		last_ghost_position = global_position
 		_spawn_ghost_at(global_position)
 		is_ghosting = true
 		
 		var dash_tween = create_tween()
-		dash_tween.tween_property(self, "global_position", enemy.global_position, 0.1).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
+		dash_tween.tween_property(self, "global_position", enemy.global_position, 0.015).set_trans(Tween.TRANS_EXPO).set_ease(Tween.EASE_OUT)
 		await dash_tween.finished
 		
-		is_ghosting = false
 		
-		enemy.queue_free()
+		is_ghosting = false
+		enemy.die(slash_direction)
 		remaining_attacks -= 1
 			
-		await get_tree().create_timer(0.3).timeout 
+		await get_tree().create_timer(0.1).timeout 
 		
-	if not is_perfect:
-		get_tree().paused = true
-		await get_tree().create_timer(0.5).timeout 
-		get_tree().paused = false
-		last_ghost_position = global_position
-		_spawn_ghost_at(global_position)
-		is_ghosting = true
-		
-		var return_tween = create_tween()
-		return_tween.tween_property(self, "global_position", combat_origin_position, 0.15).set_trans(Tween.TRANS_SINE)
-		await return_tween.finished
-		
-		is_ghosting = false 
-		preserve_momentum = false 
-	else:
-		preserve_momentum = true
-		velocity.y = double_jump_force * 0.5 
+	#if not is_perfect:
+	get_tree().paused = true
+	await get_tree().create_timer(1.0).timeout 
+	get_tree().paused = false
+	last_ghost_position = global_position
+	_spawn_ghost_at(global_position)
+	is_ghosting = true
+	
+	var return_tween = create_tween()
+	return_tween.tween_property(self, "global_position", combat_origin_position, 0.15).set_trans(Tween.TRANS_SINE)
+	await return_tween.finished
+	
+	is_ghosting = false 
+	#preserve_momentum = false 
+	#else:
+	preserve_momentum = true
+	#velocity.y = double_jump_force * 0.2
 		
 	# --- RESOLUTION: Restore States ---
 	is_dashing = false
 	is_invulnerable = false
-	set_collision_mask_value(2, true) # Re-enable enemy collision
-	
+	set_collision_mask_value(3, true) # Re-enable enemy collision
+	audio_stream_player_2d.play()
 	if cam and cam.has_method("force_default_zoom"):
-		cam.force_default_zoom()
+				cam.force_default_zoom()
+
+func reset_room_charges() -> void:
+	current_dash_charges = max_dash_charges
+	current_jump_charges = max_jump_charges
+	print("Charges refilled.")
 
 func _generate_thematic_prompt(skill: SkillType) -> Array:
 	var active_pool: Array = thematic_pools[skill].duplicate()
@@ -287,8 +344,10 @@ func _physics_process(delta: float) -> void:
 func _update_timers(delta: float) -> void:
 	if is_on_floor():
 		coyote_timer = coyote_time
+		can_double_jump = true
 	else:
 		coyote_timer -= delta
+		
 	jump_buffer_timer -= delta
 
 func _handle_gravity(delta: float) -> void:
@@ -341,18 +400,30 @@ func _handle_movement(delta: float) -> void:
 			velocity.x = move_toward(velocity.x, 0, friction * delta)
 
 func apply_knockback(source_position: Vector2, force_x: float, force_y: float) -> void:
-	if is_dashing:
+	if is_dashing or is_invulnerable:
 		return
 		
 	is_knocked_back = true
+	is_invulnerable = true 
 	preserve_momentum = false
+	
+	# Disable physical collision with the enemy layer to prevent body-blocking
+	set_collision_mask_value(3, false)
 	
 	var direction_x: float = sign(global_position.x - source_position.x)
 	if direction_x == 0:
 		direction_x = 1.0 
 		
 	velocity.x = direction_x * force_x
-	velocity.y = abs(force_y)
+	
+	# Contextual Vertical Knockback
+	if is_on_floor():
+		# Micro-bump to break floor friction. Provides zero exploitable vertical height.
+		velocity.y = -50.0 
+	else:
+		# Spike the player downward if they are hit mid-air to ruin traversal.
+		velocity.y = abs(force_y) 
+		
 	sprite.play("hurt")
 	
 	if damage_flash:
@@ -362,7 +433,10 @@ func apply_knockback(source_position: Vector2, force_x: float, force_y: float) -
 		flash_tween.tween_property(damage_flash, "modulate:a", 0.0, 0.2).set_ease(Tween.EASE_OUT)
 	
 	await get_tree().create_timer(knockback_recovery_time).timeout
+	
 	is_knocked_back = false
+	is_invulnerable = false
+	set_collision_mask_value(3, true)
 
 func _on_typing_mistake() -> void:
 	var tween = create_tween()

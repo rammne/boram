@@ -17,6 +17,8 @@ enum AttackType { KNOCKBACK, TELEPORT }
 @export var cooldown_time: float = 1.0
 @export var charge_friction: float = 4000.0
 
+@onready var animated_sprite_2d: AnimatedSprite2D = $"../AnimatedSprite2D"
+
 var is_attacking: bool = false
 var is_charging: bool = false
 var target_player: CharacterBody2D = null
@@ -53,8 +55,9 @@ func _execute_attack() -> void:
 	movement_component.set_physics_process(false)
 	body.velocity = Vector2.ZERO
 	
-	var sprite = body.get_node_or_null("Sprite2D")
+	var sprite = body.get_node_or_null("AnimatedSprite2D")
 	if sprite:
+		animated_sprite_2d.play("attack")
 		var tween = create_tween()
 		tween.tween_property(sprite, "modulate", Color.RED, windup_time / 2.0).set_trans(Tween.TRANS_SINE)
 		tween.tween_property(sprite, "modulate", Color.WHITE, windup_time / 2.0).set_trans(Tween.TRANS_SINE)

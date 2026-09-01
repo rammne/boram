@@ -1,9 +1,197 @@
 [gd_scene format=3 uid="uid://1cmy5hsckvxl"]
 
 [ext_resource type="Script" uid="uid://bowondx8788xa" path="res://scripts/wraith.gd" id="1_jgvxf"]
-[ext_resource type="Texture2D" uid="uid://c7plnpg36kxa2" path="res://assets/enemy_base.png" id="1_rvm2k"]
+[ext_resource type="Texture2D" uid="uid://tg1fv3oo2xlo" path="res://assets/enemy/ATTACK.png" id="2_412ck"]
 [ext_resource type="Script" uid="uid://brkvfsw0vovwa" path="res://scripts/drift_movement.gd" id="2_asygq"]
 [ext_resource type="Script" uid="uid://chjbnvvbfi83o" path="res://scenes/attack_component.gd" id="3_hbxvh"]
+[ext_resource type="Texture2D" uid="uid://b3e62ft7nhv2t" path="res://assets/enemy/DEATH.png" id="3_yxd5n"]
+[ext_resource type="Texture2D" uid="uid://d1hxv0w2gmvdg" path="res://assets/enemy/FLYING.png" id="4_s8t5x"]
+[ext_resource type="Texture2D" uid="uid://f58m3qkrlahb" path="res://assets/enemy/IDLE.png" id="5_qrpaf"]
+[ext_resource type="AudioStream" uid="uid://dmqj7qm5l7fcx" path="res://assets/enemy/explosive_blood_splatter.mp3" id="8_yxd5n"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ced03"]
+atlas = ExtResource("2_412ck")
+region = Rect2(0, 0, 81, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_60ce0"]
+atlas = ExtResource("2_412ck")
+region = Rect2(81, 0, 81, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f5oea"]
+atlas = ExtResource("2_412ck")
+region = Rect2(162, 0, 81, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_oryki"]
+atlas = ExtResource("2_412ck")
+region = Rect2(243, 0, 81, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lcvon"]
+atlas = ExtResource("2_412ck")
+region = Rect2(324, 0, 81, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0xb5h"]
+atlas = ExtResource("2_412ck")
+region = Rect2(405, 0, 81, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yobk5"]
+atlas = ExtResource("2_412ck")
+region = Rect2(486, 0, 81, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_6lslg"]
+atlas = ExtResource("2_412ck")
+region = Rect2(567, 0, 81, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_r2i4o"]
+atlas = ExtResource("3_yxd5n")
+region = Rect2(0, 0, 81, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_tab1v"]
+atlas = ExtResource("3_yxd5n")
+region = Rect2(81, 0, 81, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rogtb"]
+atlas = ExtResource("3_yxd5n")
+region = Rect2(162, 0, 81, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q68aq"]
+atlas = ExtResource("3_yxd5n")
+region = Rect2(243, 0, 81, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_na7lb"]
+atlas = ExtResource("3_yxd5n")
+region = Rect2(324, 0, 81, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7lk7w"]
+atlas = ExtResource("3_yxd5n")
+region = Rect2(405, 0, 81, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fpbwf"]
+atlas = ExtResource("3_yxd5n")
+region = Rect2(486, 0, 81, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rmrhi"]
+atlas = ExtResource("4_s8t5x")
+region = Rect2(0, 0, 81, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ucvu7"]
+atlas = ExtResource("4_s8t5x")
+region = Rect2(81, 0, 81, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pnw37"]
+atlas = ExtResource("4_s8t5x")
+region = Rect2(162, 0, 81, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gcgce"]
+atlas = ExtResource("4_s8t5x")
+region = Rect2(243, 0, 81, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_b2w03"]
+atlas = ExtResource("5_qrpaf")
+region = Rect2(0, 0, 81, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_p5pla"]
+atlas = ExtResource("5_qrpaf")
+region = Rect2(81, 0, 81, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ehr6b"]
+atlas = ExtResource("5_qrpaf")
+region = Rect2(162, 0, 81, 71)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jglh1"]
+atlas = ExtResource("5_qrpaf")
+region = Rect2(243, 0, 81, 71)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7n77a"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ced03")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_60ce0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f5oea")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_oryki")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lcvon")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0xb5h")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yobk5")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_6lslg")
+}],
+"loop": 0,
+"name": &"attack",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_r2i4o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_tab1v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rogtb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q68aq")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_na7lb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7lk7w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fpbwf")
+}],
+"loop": 0,
+"name": &"death",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rmrhi")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ucvu7")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pnw37")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_gcgce")
+}],
+"loop": 0,
+"name": &"flying",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_b2w03")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_p5pla")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ehr6b")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jglh1")
+}],
+"loop": 0,
+"name": &"idle",
+"speed": 10.0
+}]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7n77a"]
 size = Vector2(16, 16)
@@ -14,13 +202,26 @@ radius = 400.0
 [sub_resource type="CircleShape2D" id="CircleShape2D_7n77a"]
 radius = 176.17
 
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_yxd5n"]
+particle_flag_disable_z = true
+spread = 30.0
+initial_velocity_min = 400.0
+initial_velocity_max = 800.0
+gravity = Vector3(0, 980, 0)
+damping_min = 200.00002
+damping_max = 400.00003
+scale_min = 2.0
+scale_max = 4.0
+color = Color(1, 0, 0, 1)
+
 [node name="Wraith" type="CharacterBody2D" unique_id=1523682806 groups=["enemies"]]
 collision_layer = 4
 collision_mask = 5
 script = ExtResource("1_jgvxf")
 
-[node name="Sprite2D" type="Sprite2D" parent="." unique_id=663538725]
-texture = ExtResource("1_rvm2k")
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="." unique_id=1149677505]
+sprite_frames = SubResource("SpriteFrames_7n77a")
+animation = &"idle"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1989940226]
 shape = SubResource("RectangleShape2D_7n77a")
@@ -51,3 +252,17 @@ cooldown_time = 0.4
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitboxArea" unique_id=5837556]
 shape = SubResource("CircleShape2D_7n77a")
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="." unique_id=1964702469]
+process_mode = 3
+stream = ExtResource("8_yxd5n")
+
+[node name="BloodSplatter" type="GPUParticles2D" parent="." unique_id=155763605]
+emitting = false
+amount = 30
+amount_ratio = 0.6
+one_shot = true
+explosiveness = 1.0
+randomness = 0.8
+trail_enabled = true
+process_material = SubResource("ParticleProcessMaterial_yxd5n")

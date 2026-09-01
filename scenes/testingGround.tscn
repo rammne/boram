@@ -4,6 +4,8 @@
 [ext_resource type="Script" uid="uid://dfga7qkxy7sus" path="res://scripts/camera_2d.gd" id="2_shhcf"]
 [ext_resource type="PackedScene" uid="uid://bdixgcg2rwv04" path="res://scenes/world_boundary.tscn" id="3_ct7hk"]
 [ext_resource type="PackedScene" uid="uid://bx2yogyweqdee" path="res://scenes/test_platform.tscn" id="5_b1ee8"]
+[ext_resource type="PackedScene" uid="uid://utoo68w3tcn3" path="res://scenes/skill_refill.tscn" id="6_75p3m"]
+[ext_resource type="Texture2D" uid="uid://dv3gf8xftl0nk" path="res://assets/character/keybabe2.jpg" id="7_8ufro"]
 [ext_resource type="PackedScene" uid="uid://1cmy5hsckvxl" path="res://scenes/wraith.tscn" id="8_nbqfs"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7n77a"]
@@ -64,3 +66,14 @@ position = Vector2(1240, -7)
 
 [node name="Wraith7" parent="." unique_id=681884912 instance=ExtResource("8_nbqfs")]
 position = Vector2(974, -17)
+
+[node name="Wraith8" parent="." unique_id=352346072 instance=ExtResource("8_nbqfs")]
+position = Vector2(1208, 454)
+
+[node name="SkillRefill" parent="." unique_id=618764609 instance=ExtResource("6_75p3m")]
+position = Vector2(672, 390)
+
+[node name="Keybabe2" type="Sprite2D" parent="." unique_id=1612133053]
+position = Vector2(366.65625, 440.15625)
+scale = Vector2(0.08139038, 0.07308958)
+texture = ExtResource("7_8ufro")

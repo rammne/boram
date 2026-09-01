@@ -1,0 +1,15 @@
+[gd_scene format=3 uid="uid://utoo68w3tcn3"]
+
+[ext_resource type="Texture2D" uid="uid://cwv1pscud1a2a" path="res://assets/square_particle_asta.png" id="1_fd04m"]
+[ext_resource type="Script" uid="uid://bd0pw1wq1b8aj" path="res://scenes/skill_refill.gd" id="1_qxr8e"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7n77a"]
+
+[node name="SkillRefill" type="Area2D" unique_id=618764609]
+script = ExtResource("1_qxr8e")
+
+[node name="Sprite2D" type="Sprite2D" parent="." unique_id=403881369]
+texture = ExtResource("1_fd04m")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="." unique_id=1127382245]
+shape = SubResource("RectangleShape2D_7n77a")
