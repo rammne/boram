@@ -42,7 +42,7 @@ var preserve_momentum: bool = false
 
 # --- Skill Execution Metrics ---
 @export var double_jump_force: float = -600.0
-@export var dash_speed: float = 1400.0
+@export var dash_speed: float = 1000.0
 @export var dash_duration: float = 0.3
 @export var knockback_recovery_time: float = 0.4
 
@@ -66,7 +66,11 @@ var gravity: float = ProjectSettings.get_setting("physics/2d/default_gravity")
 @onready var ghost_timer = $AfterImageContainer/GhostTimer
 @onready var ghost_container = $AfterImageContainer
 @onready var sprite = $AnimatedSprite2D
-@onready var audio_stream_player_2d: AudioStreamPlayer2D = $AudioStreamPlayer2D
+@onready var audio_stream_player_2d: AudioStreamPlayer2D = $SwordSlash
+@onready var energy_charge: AudioStreamPlayer2D = $EnergyCharge
+@onready var jump_sfx: AudioStreamPlayer2D = $JumpSFX
+@onready var hurt_sound: AudioStreamPlayer2D = $HurtSound
+@onready var dash_sfx: AudioStreamPlayer2D = $DashSFX
 
 var is_invulnerable: bool = false
 
@@ -144,6 +148,7 @@ func _on_typing_resolved(completed_words: int, total_words: int, event_type: Str
 		velocity.y += 300.0
 
 func _execute_double_jump() -> void:
+	jump_sfx.play()
 	can_double_jump = false
 	current_jump_charges -= 1
 	last_ghost_position = global_position
@@ -163,6 +168,7 @@ func _execute_double_jump() -> void:
 	is_ghosting = false
 
 func _execute_dash() -> void:
+	dash_sfx.play()
 	current_dash_charges -= 1
 	is_dashing = true
 	var direction: float = 0.0
@@ -208,23 +214,32 @@ func _execute_cinematic_attack(completed_words: int, total_words: int) -> void:
 	
 	# Disable collision with enemies (assuming enemies are on Layer 2)
 	# This ensures your teleport tweens do not get physically blocked
+	
 	set_collision_mask_value(3, false)
+	
+	energy_charge.process_mode = Node.PROCESS_MODE_ALWAYS
+	energy_charge.play()
+	
+	var charge_duration: float = 3.0
+	#if energy_charge.stream:
+		#charge_duration = energy_charge.stream.get_length()
 	
 	var is_perfect: bool = (completed_words >= total_words and total_words > 0)
 	var cam: Camera2D = get_node_or_null("Camera2D")
 	var sprite_node = $AnimatedSprite2D
 
-	if is_perfect and cam:
-		if sprite_node and sprite_node.material and sprite_node.material is ShaderMaterial:
-			sprite_node.material.set_shader_parameter("flash_modifier", 1.0)
-			var flash_tween = create_tween()
-			flash_tween.tween_property(sprite_node.material, "shader_parameter/flash_modifier", 0.0, 1.0)
-		
-		get_tree().paused = true
-		await get_tree().create_timer(1.0).timeout 
-		get_tree().paused = false
-	else:
-		await get_tree().create_timer(0.2).timeout
+	#if is_perfect and cam:
+	if sprite_node and sprite_node.material and sprite_node.material is ShaderMaterial:
+		sprite_node.material.set_shader_parameter("flash_modifier", 1.0)
+		var flash_tween = create_tween()
+		flash_tween.tween_property(sprite_node.material, "shader_parameter/flash_modifier", 0.0, 1.0)
+	
+	get_tree().paused = true
+	await get_tree().create_timer(charge_duration, true, false, true).timeout 
+	energy_charge.stop()
+	get_tree().paused = false
+	#else:
+		#await get_tree().create_timer(0.2).timeout
 
 	var enemies: Array = get_tree().get_nodes_in_group("enemies")
 	enemies.sort_custom(func(a, b): return global_position.distance_to(a.global_position) < global_position.distance_to(b.global_position))
@@ -400,6 +415,7 @@ func _handle_movement(delta: float) -> void:
 			velocity.x = move_toward(velocity.x, 0, friction * delta)
 
 func apply_knockback(source_position: Vector2, force_x: float, force_y: float) -> void:
+	hurt_sound.play()
 	if is_dashing or is_invulnerable:
 		return
 		
@@ -409,7 +425,6 @@ func apply_knockback(source_position: Vector2, force_x: float, force_y: float) -
 	
 	# Disable physical collision with the enemy layer to prevent body-blocking
 	set_collision_mask_value(3, false)
-	
 	var direction_x: float = sign(global_position.x - source_position.x)
 	if direction_x == 0:
 		direction_x = 1.0 
@@ -425,6 +440,7 @@ func apply_knockback(source_position: Vector2, force_x: float, force_y: float) -
 		velocity.y = abs(force_y) 
 		
 	sprite.play("hurt")
+	
 	
 	if damage_flash:
 		damage_flash.show()

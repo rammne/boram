@@ -3,7 +3,7 @@ extends CharacterBody2D
 @export var word_health: int = 2 
 @onready var animated_sprite_2d: AnimatedSprite2D = $AnimatedSprite2D
 @onready var blood_splatter: GPUParticles2D = $BloodSplatter
-@onready var audio_stream_player_2d: AudioStreamPlayer2D = $AudioStreamPlayer2D
+@onready var audio_stream_player_2d: AudioStreamPlayer2D = $BloodSplatterAudio
 
 var is_dying: bool = false
 

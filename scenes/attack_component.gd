@@ -18,6 +18,7 @@ enum AttackType { KNOCKBACK, TELEPORT }
 @export var charge_friction: float = 4000.0
 
 @onready var animated_sprite_2d: AnimatedSprite2D = $"../AnimatedSprite2D"
+@onready var attack_audio: AudioStreamPlayer2D = $"../AttackAudio"
 
 var is_attacking: bool = false
 var is_charging: bool = false
@@ -55,6 +56,7 @@ func _execute_attack() -> void:
 	movement_component.set_physics_process(false)
 	body.velocity = Vector2.ZERO
 	
+	attack_audio.play()
 	var sprite = body.get_node_or_null("AnimatedSprite2D")
 	if sprite:
 		animated_sprite_2d.play("attack")

@@ -1,6 +1,15 @@
 [gd_scene format=3 uid="uid://bp7hsmhw628fq"]
 
 [ext_resource type="Script" uid="uid://bdyy8i74sd8yb" path="res://scripts/typing_ui.gd" id="1_20ag0"]
+[ext_resource type="FontFile" uid="uid://heoe3fdd1ip4" path="res://assets/fonts/VT323-Regular.ttf" id="2_8ax2c"]
+[ext_resource type="AudioStream" uid="uid://be82t8wxyprw4" path="res://assets/general/keyboard_sound.mp3" id="2_bimjh"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_byssr"]
+bg_color = Color(0, 0, 0, 0.5882353)
+
+[sub_resource type="FontVariation" id="FontVariation_8ax2c"]
+base_font = ExtResource("2_8ax2c")
+spacing_glyph = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_shhcf"]
 bg_color = Color(0.9764706, 0, 0, 1)
@@ -10,7 +19,50 @@ bg_color = Color(0, 1, 0, 1)
 
 [node name="TypingUI" type="Node2D" unique_id=91224756]
 process_mode = 3
+z_index = 100
 script = ExtResource("1_20ag0")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=2043546641]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -20.0
+offset_top = -70.0
+offset_right = 20.0
+offset_bottom = -30.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_byssr")
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer" unique_id=978130394]
+layout_mode = 2
+theme_override_constants/margin_left = 6
+theme_override_constants/margin_top = 6
+theme_override_constants/margin_right = 6
+theme_override_constants/margin_bottom = 6
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/MarginContainer" unique_id=1869110483]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=634900238]
+layout_mode = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 10
+theme_override_fonts/normal_font = SubResource("FontVariation_8ax2c")
+theme_override_font_sizes/normal_font_size = 48
+bbcode_enabled = true
+fit_content = true
+scroll_active = false
+autowrap_mode = 0
+
+[node name="ProgressBar" type="ProgressBar" parent="PanelContainer/MarginContainer/VBoxContainer" unique_id=744811595]
+custom_minimum_size = Vector2(0, 4)
+layout_mode = 2
+theme_override_styles/background = SubResource("StyleBoxFlat_shhcf")
+theme_override_styles/fill = SubResource("StyleBoxFlat_7n77a")
+show_percentage = false
 
 [node name="ColorRect" type="ColorRect" parent="." unique_id=2139121267]
 anchors_preset = 15
@@ -22,36 +74,5 @@ color = Color(0, 0, 0, 0.49803922)
 
 [node name="Timer" type="Timer" parent="." unique_id=12500828]
 
-[node name="ProgressBar" type="ProgressBar" parent="." unique_id=744811595]
-anchors_preset = 14
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_left = -100.0
-offset_top = -49.0
-offset_right = 100.0
-offset_bottom = -29.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_styles/background = SubResource("StyleBoxFlat_shhcf")
-theme_override_styles/fill = SubResource("StyleBoxFlat_7n77a")
-show_percentage = false
-
-[node name="RichTextLabel" type="RichTextLabel" parent="." unique_id=634900238]
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -100.0
-offset_top = -89.0
-offset_right = 100.0
-offset_bottom = -49.0
-grow_horizontal = 2
-grow_vertical = 2
-theme_override_font_sizes/normal_font_size = 48
-bbcode_enabled = true
-fit_content = true
-scroll_active = false
-autowrap_mode = 0
-metadata/_edit_use_anchors_ = true
+[node name="KeyboardSFX" type="AudioStreamPlayer2D" parent="." unique_id=1272730428]
+stream = ExtResource("2_bimjh")

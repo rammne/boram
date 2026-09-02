@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://dqreyi6lomb6b"
+path="res://.godot/imported/monster attack.mp3-a4185e3f75af607ae0db462afe427f6f.mp3str"
+
+[deps]
+
+source_file="res://assets/enemy/monster attack.mp3"
+dest_files=["res://.godot/imported/monster attack.mp3-a4185e3f75af607ae0db462afe427f6f.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
