@@ -6,7 +6,7 @@ enum SkillType { DOUBLE_JUMP, DASH, ULTIMATE }
 
 # --- Skill Activation Metrics ---
 #@export var required_word_count: int = 3
-@export var bullet_time_scale: float = 0.1
+@export var bullet_time_scale: float = 0.3
 @export var base_reaction_time: float = 0.5
 @export var time_per_character: float = 0.2
 
@@ -23,7 +23,7 @@ var thematic_pools: Dictionary = {
 @export var air_resistance: float = 1200.0
 
 # --- Jump Metrics ---
-@export var jump_force: float = -500.0
+@export var jump_force: float = -400.0
 @export var jump_cut_multiplier: float = 0.4
 @export var fall_gravity_multiplier: float = 1.6
 @export var max_fall_speed: float = 800.0
@@ -41,7 +41,7 @@ var is_dashing: bool = false
 var preserve_momentum: bool = false
 
 # --- Skill Execution Metrics ---
-@export var double_jump_force: float = -600.0
+@export var double_jump_force: float = -300.0
 @export var dash_speed: float = 1000.0
 @export var dash_duration: float = 0.3
 @export var knockback_recovery_time: float = 0.4
@@ -82,6 +82,8 @@ var last_ghost_position: Vector2 = Vector2.ZERO
 func _ready() -> void:
 	Signals.typing_event_resolved.connect(_on_typing_resolved)
 	Signals.typing_mistake.connect(_on_typing_mistake)
+	Signals.dash_charges_updated.emit(current_dash_charges)
+	Signals.jump_charges_updated.emit(current_jump_charges)
 	if not ghost_timer.timeout.is_connected(_on_ghost_timer_timeout):
 		ghost_timer.timeout.connect(_on_ghost_timer_timeout)
 
@@ -107,6 +109,7 @@ func _unhandled_input(event: InputEvent) -> void:
 		var current_time: float = Time.get_ticks_msec() / 1000.0
 		if current_time >= ultimate_last_used_time + ultimate_cooldown:
 			_trigger_skill(SkillType.ULTIMATE)
+			Signals.ultimate_used.emit(ultimate_cooldown) # Broadcast to UI
 			get_viewport().set_input_as_handled()
 
 func _trigger_skill(skill: SkillType) -> void:
@@ -151,6 +154,7 @@ func _execute_double_jump() -> void:
 	jump_sfx.play()
 	can_double_jump = false
 	current_jump_charges -= 1
+	Signals.jump_charges_updated.emit(current_jump_charges)
 	last_ghost_position = global_position
 	_spawn_ghost_at(global_position)
 	is_ghosting = true
@@ -170,6 +174,7 @@ func _execute_double_jump() -> void:
 func _execute_dash() -> void:
 	dash_sfx.play()
 	current_dash_charges -= 1
+	Signals.dash_charges_updated.emit(current_dash_charges)
 	is_dashing = true
 	var direction: float = 0.0
 	set_collision_mask_value(3, false)
@@ -200,13 +205,18 @@ func add_charge(type: String, amount: int = 3) -> void:
 	match type:
 		"dash":
 			current_dash_charges = min(current_dash_charges + amount, max_dash_charges)
-		"double_jump":
+			Signals.dash_charges_updated.emit(current_dash_charges)
+		"jump":
 			current_jump_charges = min(current_jump_charges + amount, max_jump_charges)
+			Signals.jump_charges_updated.emit(current_jump_charges)
 		"both":
 			current_dash_charges = min(current_dash_charges + amount, max_dash_charges)
 			current_jump_charges = min(current_jump_charges + amount, max_jump_charges)
+			Signals.dash_charges_updated.emit(current_dash_charges)
+			Signals.jump_charges_updated.emit(current_jump_charges)
 
 func _execute_cinematic_attack(completed_words: int, total_words: int) -> void:
+	BackgroundMusic.stop_track()
 	ultimate_last_used_time = Time.get_ticks_msec() / 1000.0
 	is_dashing = true 
 	is_invulnerable = true
@@ -291,13 +301,15 @@ func _execute_cinematic_attack(completed_words: int, total_words: int) -> void:
 	is_invulnerable = false
 	set_collision_mask_value(3, true) # Re-enable enemy collision
 	audio_stream_player_2d.play()
+	BackgroundMusic.play_track()
 	if cam and cam.has_method("force_default_zoom"):
 				cam.force_default_zoom()
 
 func reset_room_charges() -> void:
 	current_dash_charges = max_dash_charges
 	current_jump_charges = max_jump_charges
-	print("Charges refilled.")
+	Signals.dash_charges_updated.emit(current_dash_charges)
+	Signals.jump_charges_updated.emit(current_jump_charges)
 
 func _generate_thematic_prompt(skill: SkillType) -> Array:
 	var active_pool: Array = thematic_pools[skill].duplicate()

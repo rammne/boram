@@ -1,0 +1,10 @@
+[gd_scene format=3 uid="uid://bxkb7r47g32qh"]
+
+[ext_resource type="AudioStream" uid="uid://dl5jsmycveh8j" path="res://assets/general/theme_music.ogg" id="1_0rulj"]
+[ext_resource type="Script" uid="uid://caykhj7c7r1kq" path="res://scenes/background_music.gd" id="2_83psx"]
+
+[node name="BackgroundMusic" type="AudioStreamPlayer" unique_id=1084705983]
+process_mode = 3
+stream = ExtResource("1_0rulj")
+volume_db = -10.0
+script = ExtResource("2_83psx")

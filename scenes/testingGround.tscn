@@ -1,16 +1,19 @@
 [gd_scene format=3 uid="uid://hl73gilr8bde"]
 
+[ext_resource type="Script" uid="uid://deg0vs4s0pny4" path="res://scenes/testing_ground.gd" id="1_8ufro"]
 [ext_resource type="PackedScene" uid="uid://wrg47dn76sic" path="res://scenes/player.tscn" id="1_sptbv"]
 [ext_resource type="Script" uid="uid://dfga7qkxy7sus" path="res://scripts/camera_2d.gd" id="2_shhcf"]
 [ext_resource type="PackedScene" uid="uid://bdixgcg2rwv04" path="res://scenes/world_boundary.tscn" id="3_ct7hk"]
 [ext_resource type="PackedScene" uid="uid://bx2yogyweqdee" path="res://scenes/test_platform.tscn" id="5_b1ee8"]
 [ext_resource type="PackedScene" uid="uid://utoo68w3tcn3" path="res://scenes/skill_refill.tscn" id="6_75p3m"]
 [ext_resource type="PackedScene" uid="uid://1cmy5hsckvxl" path="res://scenes/wraith.tscn" id="8_nbqfs"]
+[ext_resource type="PackedScene" uid="uid://dpdxouvdr02w5" path="res://scenes/gameplay_ui.tscn" id="8_ujh3a"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7n77a"]
-size = Vector2(1158, 117)
+size = Vector2(489, 117)
 
 [node name="TestingGround" type="Node2D" unique_id=1088266072]
+script = ExtResource("1_8ufro")
 
 [node name="Player" parent="." unique_id=438760599 instance=ExtResource("1_sptbv")]
 position = Vector2(54, 464)
@@ -26,24 +29,32 @@ target = NodePath("..")
 position = Vector2(398, 437)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Env/Floor" unique_id=714618323]
-position = Vector2(173, 158.5)
+position = Vector2(-161.5, 158.5)
 shape = SubResource("RectangleShape2D_7n77a")
 
 [node name="ColorRect" type="ColorRect" parent="Env/Floor" unique_id=1298844733]
 offset_left = -404.0
 offset_top = 99.0
-offset_right = 749.0
+offset_right = 83.0
+offset_bottom = 216.0
+color = Color(0.12005126, 0.12005126, 0.12005126, 1)
+
+[node name="Floor2" type="StaticBody2D" parent="Env" unique_id=1188053224]
+position = Vector2(1190, 434)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Env/Floor2" unique_id=884482447]
+position = Vector2(-161.5, 158.5)
+shape = SubResource("RectangleShape2D_7n77a")
+
+[node name="ColorRect" type="ColorRect" parent="Env/Floor2" unique_id=1652510313]
+offset_left = -404.0
+offset_top = 99.0
+offset_right = 83.0
 offset_bottom = 216.0
 color = Color(0.12005126, 0.12005126, 0.12005126, 1)
 
 [node name="WorldBoundary" parent="." unique_id=1093097076 instance=ExtResource("3_ct7hk")]
 position = Vector2(-71, 745)
-
-[node name="TestPlatform" parent="." unique_id=1601330142 instance=ExtResource("5_b1ee8")]
-position = Vector2(500, 422)
-
-[node name="TestPlatform2" parent="." unique_id=742392728 instance=ExtResource("5_b1ee8")]
-position = Vector2(846, 274)
 
 [node name="Wraith" parent="." unique_id=1523682806 instance=ExtResource("8_nbqfs")]
 position = Vector2(193, 186)
@@ -70,4 +81,12 @@ position = Vector2(974, -17)
 position = Vector2(1208, 454)
 
 [node name="SkillRefill" parent="." unique_id=618764609 instance=ExtResource("6_75p3m")]
-position = Vector2(672, 390)
+position = Vector2(849, 512)
+
+[node name="GameplayUI" parent="." unique_id=416785711 instance=ExtResource("8_ujh3a")]
+
+[node name="TestPlatform" parent="." unique_id=1601330142 instance=ExtResource("5_b1ee8")]
+position = Vector2(301, 429)
+
+[node name="TestPlatform2" parent="." unique_id=559253008 instance=ExtResource("5_b1ee8")]
+position = Vector2(847, 356)

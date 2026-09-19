@@ -1,0 +1,83 @@
+[gd_scene format=3 uid="uid://dpdxouvdr02w5"]
+
+[ext_resource type="Script" uid="uid://c0suyceiqut1b" path="res://gameplay_ui.gd" id="1_wf0n7"]
+[ext_resource type="Texture2D" uid="uid://chlj8e37o5upo" path="res://assets/general/Keyboard Extras.png" id="2_bcwfe"]
+[ext_resource type="Texture2D" uid="uid://di47ml03v7wof" path="res://assets/general/Keyboard Letters and Symbols.png" id="3_bcwfe"]
+[ext_resource type="FontFile" uid="uid://heoe3fdd1ip4" path="res://assets/fonts/VT323-Regular.ttf" id="4_haufa"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7n77a"]
+atlas = ExtResource("2_bcwfe")
+region = Rect2(0, 0, 32.436924, 16.526623)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_byssr"]
+atlas = ExtResource("2_bcwfe")
+region = Rect2(0, 0, 32.863174, 16.780184)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_3ydn5"]
+atlas = ExtResource("3_bcwfe")
+region = Rect2(0, 33.20563, 15.217171, 14.003647)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_78bhq"]
+atlas = ExtResource("3_bcwfe")
+region = Rect2(112.46606, 81.692375, 14.01976, 13.179451)
+
+[node name="GameplayUI" type="CanvasLayer" unique_id=416785711]
+script = ExtResource("1_wf0n7")
+
+[node name="SkillContainer" type="MarginContainer" parent="." unique_id=301125105]
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -20.0
+offset_right = 40.0
+offset_bottom = 20.0
+grow_vertical = 2
+theme_override_constants/margin_left = 32
+
+[node name="SkillStack" type="VBoxContainer" parent="SkillContainer" unique_id=2028134595]
+layout_mode = 2
+
+[node name="UltimateCooldown" type="TextureProgressBar" parent="SkillContainer/SkillStack" unique_id=1065429358]
+layout_mode = 2
+step = 0.01
+texture_under = SubResource("AtlasTexture_7n77a")
+texture_progress = SubResource("AtlasTexture_byssr")
+tint_under = Color(0.26666668, 0.26666668, 0.26666668, 1)
+
+[node name="Label" type="Label" parent="SkillContainer/SkillStack/UltimateCooldown" unique_id=1260327034]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/outline_size = 3
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="DashUI" type="HBoxContainer" parent="SkillContainer/SkillStack" unique_id=214967053]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="SkillContainer/SkillStack/DashUI" unique_id=1756665408]
+layout_mode = 2
+texture = SubResource("AtlasTexture_3ydn5")
+expand_mode = 2
+
+[node name="DashCount" type="Label" parent="SkillContainer/SkillStack/DashUI" unique_id=1446953266]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_haufa")
+text = "x3"
+
+[node name="JumpUI" type="HBoxContainer" parent="SkillContainer/SkillStack" unique_id=415427005]
+layout_mode = 2
+
+[node name="TextureRect" type="TextureRect" parent="SkillContainer/SkillStack/JumpUI" unique_id=917436975]
+layout_mode = 2
+texture = SubResource("AtlasTexture_78bhq")
+expand_mode = 2
+
+[node name="JumpCount" type="Label" parent="SkillContainer/SkillStack/JumpUI" unique_id=907876141]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_haufa")
+text = "x3"

@@ -1,0 +1,207 @@
+[gd_scene format=3 uid="uid://bvwstmv4144vi"]
+
+[ext_resource type="Script" uid="uid://bcqr81ywqivxn" path="res://scenes/main_menu.gd" id="1_l6cm7"]
+[ext_resource type="FontFile" uid="uid://heoe3fdd1ip4" path="res://assets/fonts/VT323-Regular.ttf" id="2_bqqt6"]
+[ext_resource type="AudioStream" uid="uid://cyxprfgs24y4x" path="res://assets/general/main_menu.mp3" id="2_ekxnf"]
+[ext_resource type="PackedScene" uid="uid://wrg47dn76sic" path="res://scenes/player.tscn" id="4_8ln24"]
+[ext_resource type="Script" uid="uid://dfga7qkxy7sus" path="res://scripts/camera_2d.gd" id="5_oa1go"]
+[ext_resource type="PackedScene" uid="uid://bx2yogyweqdee" path="res://scenes/test_platform.tscn" id="5_rtw2f"]
+[ext_resource type="Script" uid="uid://1nejd5l7syh6" path="res://scenes/start_area.gd" id="6_rtw2f"]
+[ext_resource type="PackedScene" uid="uid://utoo68w3tcn3" path="res://scenes/skill_refill.tscn" id="8_tbmy8"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_7n77a"]
+radius = 24.020824
+
+[node name="MainMenu" type="Control" unique_id=1348900267]
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_l6cm7")
+metadata/_edit_horizontal_guides_ = [361.0]
+metadata/_edit_vertical_guides_ = [-15.0, 508.0, 495.0]
+
+[node name="ColorRect" type="ColorRect" parent="." unique_id=1975346483]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -236.0
+offset_top = -395.0
+offset_right = 225.0
+offset_bottom = 158.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=420055105]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -165.5
+offset_top = -299.0
+offset_right = 165.5
+offset_bottom = -221.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer" unique_id=377087261]
+layout_mode = 2
+theme_override_constants/separation = 16
+
+[node name="GameTitle" type="Label" parent="MarginContainer/VBoxContainer" unique_id=926365427]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_bqqt6")
+theme_override_font_sizes/font_size = 36
+text = "Boram's Brave Adventure"
+horizontal_alignment = 1
+
+[node name="GameSubtitle" type="Label" parent="MarginContainer/VBoxContainer" unique_id=1449687090]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_bqqt6")
+theme_override_font_sizes/font_size = 24
+text = "There's a keybabe at the top!"
+horizontal_alignment = 1
+
+[node name="StartButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=2095202143]
+visible = false
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_bqqt6")
+text = "Start Game"
+
+[node name="TypingTestButton" type="Button" parent="MarginContainer/VBoxContainer" unique_id=423080951]
+visible = false
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_bqqt6")
+text = "Test Your Might!"
+
+[node name="MainMenuMusic" type="AudioStreamPlayer" parent="." unique_id=2017141134]
+stream = ExtResource("2_ekxnf")
+volume_db = -25.0
+
+[node name="Player" parent="." unique_id=438760599 instance=ExtResource("4_8ln24")]
+position = Vector2(25, 141)
+
+[node name="Camera2D" type="Camera2D" parent="Player" unique_id=882958303 node_paths=PackedStringArray("target")]
+limit_left = -30
+limit_right = 495
+limit_bottom = 361
+script = ExtResource("5_oa1go")
+target = NodePath("..")
+
+[node name="TestPlatform" parent="." unique_id=1601330142 instance=ExtResource("5_rtw2f")]
+position = Vector2(-232, 188)
+
+[node name="TestPlatform2" parent="." unique_id=1780494164 instance=ExtResource("5_rtw2f")]
+position = Vector2(4, 188)
+
+[node name="TestPlatform3" parent="." unique_id=200472230 instance=ExtResource("5_rtw2f")]
+position = Vector2(-428, 32)
+
+[node name="TestPlatform10" parent="." unique_id=756912871 instance=ExtResource("5_rtw2f")]
+position = Vector2(-420, -152)
+
+[node name="TestPlatform4" parent="." unique_id=17143758 instance=ExtResource("5_rtw2f")]
+position = Vector2(161, 111)
+
+[node name="TestPlatform9" parent="." unique_id=1973922254 instance=ExtResource("5_rtw2f")]
+position = Vector2(206, -55)
+
+[node name="TestPlatform5" parent="." unique_id=609650322 instance=ExtResource("5_rtw2f")]
+position = Vector2(273.00003, 170)
+rotation = -1.5782675
+
+[node name="TestPlatform7" parent="." unique_id=1268830395 instance=ExtResource("5_rtw2f")]
+position = Vector2(272.00003, -94)
+rotation = -1.5782675
+
+[node name="TestPlatform8" parent="." unique_id=1210546274 instance=ExtResource("5_rtw2f")]
+position = Vector2(-237, -90)
+rotation = -1.5782675
+
+[node name="TestPlatform6" parent="." unique_id=2035639031 instance=ExtResource("5_rtw2f")]
+position = Vector2(-235, 182)
+rotation = -1.572219
+
+[node name="StartArea" type="Area2D" parent="." unique_id=1961172080]
+position = Vector2(-560, -22)
+collision_layer = 32
+script = ExtResource("6_rtw2f")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StartArea" unique_id=1051261718]
+position = Vector2(380, -167)
+shape = SubResource("CircleShape2D_7n77a")
+
+[node name="StartingAreaText" type="Label" parent="." unique_id=1457273987]
+layout_mode = 0
+offset_left = -186.0
+offset_top = -39.0
+offset_right = -115.0
+offset_bottom = 10.0
+theme_override_fonts/font = ExtResource("2_bqqt6")
+text = "\";\" to
+double jump"
+
+[node name="StartingAreaText2" type="Label" parent="." unique_id=316722049]
+layout_mode = 0
+offset_left = 185.0
+offset_top = -116.0
+offset_right = 256.0
+offset_bottom = -67.0
+theme_override_fonts/font = ExtResource("2_bqqt6")
+text = "\"A\" to
+dash"
+
+[node name="StartingAreaText3" type="Label" parent="." unique_id=763453393]
+layout_mode = 0
+offset_left = -208.0
+offset_top = -206.0
+offset_right = -137.0
+offset_bottom = -157.0
+theme_override_fonts/font = ExtResource("2_bqqt6")
+text = "Jump here
+to Start!"
+
+[node name="Guide1" type="Label" parent="." unique_id=943453937]
+layout_mode = 0
+offset_left = -193.0
+offset_top = 152.0
+offset_right = -103.0
+offset_bottom = 171.0
+theme_override_fonts/font = ExtResource("2_bqqt6")
+text = "\"F\" to go left"
+
+[node name="Guide2" type="Label" parent="." unique_id=339806224]
+layout_mode = 0
+offset_left = 160.0
+offset_top = 154.0
+offset_right = 250.0
+offset_bottom = 173.0
+theme_override_fonts/font = ExtResource("2_bqqt6")
+text = "\"J\" to go right"
+
+[node name="Guide3" type="Label" parent="." unique_id=2072945399]
+layout_mode = 0
+offset_left = 153.0
+offset_top = 66.0
+offset_right = 250.0
+offset_bottom = 85.0
+theme_override_fonts/font = ExtResource("2_bqqt6")
+text = "\"Space\" to jump"
+
+[node name="SkillRefill" parent="." unique_id=618764609 instance=ExtResource("8_tbmy8")]
+position = Vector2(-39, 158)
+
+[connection signal="area_entered" from="StartArea" to="StartArea" method="_on_area_entered"]
+[connection signal="body_entered" from="StartArea" to="StartArea" method="_on_body_entered"]
